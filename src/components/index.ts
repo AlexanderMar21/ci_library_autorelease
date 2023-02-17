@@ -1,0 +1,1 @@
+export { default as HelloService } from './HelloWorld.vue'
