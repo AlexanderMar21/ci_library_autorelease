@@ -33,6 +33,7 @@ jobs:
         id: checkTag
         with:
           tag: v${{ steps.package-version.outputs.current-version }}
+      - name: Prin tag
         run: echo ${{ steps.checkTag.outputs.exists }}
       - name: Pubish Release
         env:
