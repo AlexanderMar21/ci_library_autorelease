@@ -6,16 +6,6 @@ on:
 permissions:
   contents: read
 jobs:
-  debug:
-    name: Debug
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dump env
-        run: env | sort
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
   release:
     permissions: write-all
     name: Release
@@ -38,19 +28,15 @@ jobs:
       - name: Get Package Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
-      - name: Check for existing tag
-        run: git rev-parse --tags=v${{ steps.package-version.outputs.current-version }}
-      - name: Release
+      - uses: mukunku/tag-exists-action@v1.2.0
+        id: checkTag
+          with:
+            tag: v${{ steps.package-version.outputs.current-version }}
+      - name: Pubish Prepare
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+        if: ! ${{ steps.checkTag.outputs.exists }
         run: |
-          echo "Tag name from GITHUB_REF_NAME: ${{ steps.vars.outputs.tag }}"
           git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }}
-      - name: Publish Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-        run: |
-          echo "Tag name from GITHUB_REF_NAME: ${{ steps.vars.outputs.tag }}"
           gh release create v${{ steps.package-version.outputs.current-version }}
