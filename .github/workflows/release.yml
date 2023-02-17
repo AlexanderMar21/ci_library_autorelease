@@ -42,6 +42,6 @@ jobs:
           git add .
           git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
           git push origin --no-verify
-          git tag v${{ steps.package-version.outputs.current-version }}
+          git tag v${{ steps.package-version.outputs.current-version }} --message="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details.""
           git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
           gh release create v${{ steps.package-version.outputs.current-version }}
