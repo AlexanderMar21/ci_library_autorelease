@@ -1,3 +1,17 @@
+## [0.2.12](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.10...v0.2.12) (2023-02-17)
+
+
+### Bug Fixes
+
+* the typo ([334dd6b](https://github.com/AlexanderMar21/ci_library_autorelease/commit/334dd6b951c801376b3eb0159002d1a3085965de))
+
+
+### Features
+
+* add custom body ([052a321](https://github.com/AlexanderMar21/ci_library_autorelease/commit/052a32166baf354366ed458cbc84157c7c63f0f6))
+
+
+
 ## [0.2.11](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.10...v0.2.11) (2023-02-17)
 
 
