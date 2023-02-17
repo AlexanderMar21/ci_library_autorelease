@@ -39,16 +39,16 @@ jobs:
         run: |
           echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
           echo "Tag name from github.ref_name: ${{ github.event.release.tag_name }}"
-      # - name: Release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #   run: |
-      #     yarn release && git push --follow-tags
-      # - name: Get Package Version
-      #   id: package-version
-      #   uses: martinbeentjes/npm-get-version-action@main
-      # - name: Publish Release
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-      #     RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
-      #   run: gh release create v${{ steps.package-version.outputs.current-version}}
+      - name: Get Package Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+        run: |
+          git tag v${{ steps.package-version.outputs.current-version }} && git push --follow-tags
+      - name: Publish Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: gh release create v${{ steps.package-version.outputs.current-version }}
