@@ -38,10 +38,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         if: ${{ steps.checkTag.outputs.exists }} == false
         run: |
+          git pull tags
           git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
           gh release create v${{ steps.package-version.outputs.current-version }}
           yarn changelog
-          git add CHANGELOG.md
+          git add .
           git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
           git push origin --no-verify
