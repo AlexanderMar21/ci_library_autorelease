@@ -1,3 +1,12 @@
+## [0.2.9](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.8...v0.2.9) (2023-02-17)
+
+
+### Bug Fixes
+
+* the thing ([32b9a1b](https://github.com/AlexanderMar21/ci_library_autorelease/commit/32b9a1bb026de75a207191885286188239981feb))
+
+
+
 ## [0.2.8](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.7...v0.2.8) (2023-02-17)
 
 
