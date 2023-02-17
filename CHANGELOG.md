@@ -1,3 +1,12 @@
+## [0.2.15](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.14...v0.2.15) (2023-02-17)
+
+
+### Features
+
+* better release notes ([7494ebc](https://github.com/AlexanderMar21/ci_library_autorelease/commit/7494ebc2b7eeb9b6518eebf481bd57f3c5e47bbc))
+
+
+
 ## [0.2.14](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.13...v0.2.14) (2023-02-17)
 
 
