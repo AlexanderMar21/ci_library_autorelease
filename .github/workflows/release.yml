@@ -38,7 +38,7 @@ jobs:
       - name: Pubish Release
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        if: false == ${{ steps.checkTag.outputs.exists }}
+        if: ${{ steps.checkTag.outputs.exists == false }}
         run: |
           yarn changelog
           git add .
