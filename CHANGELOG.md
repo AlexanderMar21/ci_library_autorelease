@@ -1,3 +1,17 @@
+## [0.2.13](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.12...v0.2.13) (2023-02-17)
+
+
+### Bug Fixes
+
+* add release notes ([eaee28b](https://github.com/AlexanderMar21/ci_library_autorelease/commit/eaee28b063e92fcdbebdd879a5cfc8f33d7f5bcd))
+
+
+### Features
+
+* release notes ([3b87316](https://github.com/AlexanderMar21/ci_library_autorelease/commit/3b87316543ed252fd1c937e948d7e333d29c5675))
+
+
+
 ## [0.2.12](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.10...v0.2.12) (2023-02-17)
 
 
