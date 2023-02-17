@@ -28,7 +28,8 @@ jobs:
       - name: Get Package Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
-      - uses: mukunku/tag-exists-action@v1.2.0
+      - name: Check for existing tag
+        uses: mukunku/tag-exists-action@v1.2.0
         id: checkTag
           with:
             tag: v${{ steps.package-version.outputs.current-version }}
