@@ -36,7 +36,7 @@ jobs:
       - name: Pubish Prepare
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        if: ! ${{ steps.checkTag.outputs.exists }
+        if: ${{ !steps.checkTag.outputs.exists }
         run: |
           git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }}
