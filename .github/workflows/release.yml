@@ -41,9 +41,9 @@ jobs:
         if: ${{ steps.checkTag.outputs.exists }} == false
         run: |
           git tag v${{ steps.package-version.outputs.current-version }}
-          yarn changelog
-          git add CHANGELOG.md
-          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-          git push origin --no-verify
+          # yarn changelog
+          # git add CHANGELOG.md
+          # git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
+          # git push origin --no-verify
           git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
           gh release create v${{ steps.package-version.outputs.current-version }}
