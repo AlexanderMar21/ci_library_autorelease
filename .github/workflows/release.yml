@@ -46,7 +46,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
-          git tag v${{ steps.package-version.outputs.current-version }} && git push --follow-tags
+          git tag v${{ steps.package-version.outputs.current-version }} && git push origin v${{ steps.package-version.outputs.current-version }}
       - name: Publish Release
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
