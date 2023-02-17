@@ -35,19 +35,17 @@ jobs:
         run: |
           git config user.name "Autorelease Bot"
           git config user.email "<>"
-      - name: GitHub Tag Name example
-        run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{ github.event.release.tag_name }}"
       - name: Get Package Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
+      - name: Check for existing tag
+        run: echo git rev-parse --tags=v${{ steps.package-version.outputs.current-version }}
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
-          git tag v${{ steps.package-version.outputs.current-version }}
           echo "Tag name from GITHUB_REF_NAME: ${{ steps.vars.outputs.tag }}"
+          git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }}
       - name: Publish Release
         env:
