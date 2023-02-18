@@ -1,3 +1,7 @@
+## [0.2.31](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.30...v0.2.31) (2023-02-18)
+
+
+
 ## [0.2.30](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.2...v0.2.30) (2023-02-18)
 
 
