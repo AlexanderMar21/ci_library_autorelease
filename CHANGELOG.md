@@ -1,3 +1,12 @@
+## [0.2.19](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.18...v0.2.19) (2023-02-18)
+
+
+### Bug Fixes
+
+* flow 2 ([a371500](https://github.com/AlexanderMar21/ci_library_autorelease/commit/a371500fa6fb62508dfed93ea6158cb4e7ed3b33))
+
+
+
 ## [0.2.18](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.16...v0.2.18) (2023-02-18)
 
 
