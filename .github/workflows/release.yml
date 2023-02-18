@@ -42,7 +42,7 @@ jobs:
         run: |
           yarn changelog
           git add CHANGELOG.md
-          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
+          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀"
           git push origin --no-verify
           git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
