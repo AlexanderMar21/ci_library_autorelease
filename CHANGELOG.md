@@ -1,3 +1,18 @@
+## [0.2.23](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.22...v0.2.23) (2023-02-18)
+
+
+### Bug Fixes
+
+* permisions ([ccea3b2](https://github.com/AlexanderMar21/ci_library_autorelease/commit/ccea3b279563c518718fbf7c552274c65f02dbf8))
+* test new permissions ([53287c5](https://github.com/AlexanderMar21/ci_library_autorelease/commit/53287c572b765ee4f531860dfaf4e7b852aec196))
+
+
+### Features
+
+* test for nested steps ([147c00f](https://github.com/AlexanderMar21/ci_library_autorelease/commit/147c00f59d51376eb925b7009f9346f3fc490818))
+
+
+
 ## [0.2.22](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.18...v0.2.22) (2023-02-18)
 
 
