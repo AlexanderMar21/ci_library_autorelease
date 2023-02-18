@@ -2,6 +2,7 @@
   "name": "alexanter-ci-autorelease",
   "private": false,
   "version": "0.2.33",
+
   "type": "module",
   "scripts": {
     "dev": "vite",
