@@ -37,7 +37,7 @@ jobs:
         uses: TriPSs/conventional-changelog-action@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          version-file: "./package.json,./yarn.lock"
+          version-file: "./package.json,./package-lock.json"
           git-branch: "release-from-${{ github.sha }}"
           skip-on-empty: false
           skip-git-pull: true
