@@ -1,3 +1,13 @@
+## [0.2.18](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.16...v0.2.18) (2023-02-18)
+
+
+### Bug Fixes
+
+* workflow ([e9aeaee](https://github.com/AlexanderMar21/ci_library_autorelease/commit/e9aeaeeff359f979688bf8cf917a5c6c6493930e))
+* workflow ([4108213](https://github.com/AlexanderMar21/ci_library_autorelease/commit/4108213f88bdabfe8f26d9aa7ec5256e2466a9ba))
+
+
+
 ## [0.2.15](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.14...v0.2.15) (2023-02-17)
 
 
