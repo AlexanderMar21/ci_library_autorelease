@@ -1,7 +1,7 @@
 {
   "name": "alexanter-ci-autorelease",
   "private": false,
-  "version": "0.2.31",
+  "version": "0.2.32",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,7 +16,6 @@
   "files": [
     "dist"
   ],
-
   "repository": {
     "type": "git",
     "url": "https://github.com/AlexanderMar21/ci_library_autorelease"
