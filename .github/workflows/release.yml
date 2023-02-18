@@ -15,6 +15,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: yarn && yarn build
+      - name: setup git config
+        run: |
+          git config user.name "Autorelease Bot"
+          git config user.email "<>"
       - name: Get Package Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@main
@@ -23,27 +33,15 @@ jobs:
         id: checkTag
         with:
           tag: v${{ steps.package-version.outputs.current-version }}
-      - name: Release Steps
+      - name: Pubish Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         if: ${{ steps.checkTag.outputs.exists == 'false' }}
-        steps:
-        - name: Setup Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: "lts/*"
-        - name: Install dependencies
-          run: yarn && yarn build
-        - name: setup git config
-          run: |
-            git config user.name "Autorelease Bot"
-            git config user.email "<>"
-        - name: Pubish Release
-          env:
-            GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-          run: |
-            yarn changelog
-            git add CHANGELOG.md
-            git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-            git push origin --no-verify
-            git tag v${{ steps.package-version.outputs.current-version }}
-            git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
-            gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details."
+        run: |
+          yarn changelog
+          git add CHANGELOG.md
+          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
+          git push origin --no-verify
+          git tag v${{ steps.package-version.outputs.current-version }}
+          git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
+          gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details."
