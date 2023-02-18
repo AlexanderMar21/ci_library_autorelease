@@ -37,7 +37,7 @@ jobs:
           tag: v${{ steps.package-version.outputs.current-version }}
       - name: Pubish Release
         env:
-          GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: ${{ steps.checkTag.outputs.exists == 'false' }}
         run: |
           yarn changelog
