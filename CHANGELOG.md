@@ -1,3 +1,16 @@
+## [0.2.22](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.18...v0.2.22) (2023-02-18)
+
+
+### Bug Fixes
+
+* flow 2 ([a371500](https://github.com/AlexanderMar21/ci_library_autorelease/commit/a371500fa6fb62508dfed93ea6158cb4e7ed3b33))
+* pipeline ([b8f24e4](https://github.com/AlexanderMar21/ci_library_autorelease/commit/b8f24e4cd7e6dd6e60c6a3189b9ff23b0a3afd69))
+* something ([84b4b5c](https://github.com/AlexanderMar21/ci_library_autorelease/commit/84b4b5ca797a0c01d410035db65e493f19ef2b38))
+* workflow ([b9fb185](https://github.com/AlexanderMar21/ci_library_autorelease/commit/b9fb18559456555dfd2da134cb2c11f3935c93d1))
+* workflow ([8d1ecf3](https://github.com/AlexanderMar21/ci_library_autorelease/commit/8d1ecf3d3ffbc2ba9a943749e5016a53949c8a23))
+
+
+
 ## [0.2.20](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.18...v0.2.20) (2023-02-18)
 
 
