@@ -9,8 +9,6 @@ jobs:
   release:
     permissions:
       contents: write
-      deployments: write
-      id-token: read
       issues: read
     name: Release
     runs-on: ubuntu-latest
