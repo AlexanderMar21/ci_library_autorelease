@@ -1,3 +1,12 @@
+## [0.2.2](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.23...v0.2.2) (2023-02-18)
+
+
+### Bug Fixes
+
+*  test basic token ([443333b](https://github.com/AlexanderMar21/ci_library_autorelease/commit/443333b19054e1a62c828d7a968d4277b2c259e3))
+
+
+
 ## [0.2.23](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.22...v0.2.23) (2023-02-18)
 
 
