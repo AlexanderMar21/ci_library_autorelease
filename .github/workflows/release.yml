@@ -41,6 +41,6 @@ jobs:
           yarn changelog
           git add CHANGELOG.md
           git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-          git tag v${{ steps.package-version.outputs.current-version }}
-          git push origin --follow-tags --no-verify --targret
+          git tag v${{ steps.package-version.outputs.current-version }} --targret
+          git push origin --follow-tags --no-verify
           gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details."
