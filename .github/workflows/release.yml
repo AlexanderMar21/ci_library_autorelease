@@ -3,14 +3,13 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "data/**"
 
 concurrency:
   group: "main-branch"
 
 jobs:
   changelog:
+    permissions: write-all
     if: github.repository == 'AlexanderMar21/ci_library_autorelease'
     runs-on: ubuntu-latest
 
