@@ -1,3 +1,12 @@
+## [0.2.30](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.2...v0.2.30) (2023-02-18)
+
+
+### Features
+
+* test skip ci ([d57abc7](https://github.com/AlexanderMar21/ci_library_autorelease/commit/d57abc7f5d12e8561a238370cae0a7b16731b348))
+
+
+
 ## [0.2.2](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.2.23...v0.2.2) (2023-02-18)
 
 
