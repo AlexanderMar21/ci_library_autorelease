@@ -56,6 +56,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Delete Branch
+      - name: create PR with release info
+        id: delete-branch
+        run: git push origin -d release-from-${{ github.sha }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # release info is now in main so we can continue as before
       - name: create release with last commit
         uses: actions/create-release@v1
