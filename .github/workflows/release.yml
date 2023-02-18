@@ -1,49 +1,69 @@
-name: Release
+name: Releases
 on:
   push:
     branches:
       - main
-permissions:
-  contents: read
+    paths-ignore:
+      - "data/**"
+
+concurrency:
+  group: "main-branch"
+
 jobs:
-  release:
-    permissions:
-      contents: write
-      issues: read
-    name: Release
+  changelog:
+    if: github.repository == 'AlexanderMar21/ci_library_autorelease'
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      # Create a temporary, uniquely named branch to push release info to
+      - name: create temporary branch
+        uses: peterjgrainger/action-create-branch@v2.3.0
+        id: create-branch
         with:
-          fetch-depth: 0
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+          branch: "release-from-${{ github.sha }}"
+          sha: "${{ github.sha }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # check out the repository afterwards
+      - uses: actions/checkout@v3
+
+      # fetch branches and switch to the temporary branch
+      - name: switch to new branch
+        run: git fetch --all && git checkout --track origin/release-from-${{ github.sha }}
+
+      # create release info and push it upstream
+      - name: conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
         with:
-          node-version: "lts/*"
-      - name: Install dependencies
-        run: yarn && yarn build
-      - name: Setup Git author   # The profile name will be shown in the commit
-        run: |
-          git config user.name "Autorelease Bot"
-          git config user.email "<>"
-      - name: Get Package Version  # Get the package.json version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@main
-      - name: Check for existing tag  # Check for existing tag with the package.json version
-        uses: mukunku/tag-exists-action@v1.2.0
-        id: checkTag
-        with:
-          tag: v${{ steps.package-version.outputs.current-version }}
-      - name: Pubish New Release
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-file: "./package.json,./package-lock.json"
+          git-branch: "release-from-${{ github.sha }}"
+          skip-on-empty: false
+          skip-git-pull: true
+
+      # create PR using GitHub CLI
+      - name: create PR with release info
+        id: create-pr
+        run: gh pr create --base main --head release-from-${{ github.sha }} --title 'Merge new release into main' --body 'Created by Github action'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # merge PR using GitHub CLI
+      - name: merge PR with release info
+        id: merge-pr
+        run: gh pr merge --admin --merge --subject 'Merge release info' --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # release info is now in main so we can continue as before
+      - name: create release with last commit
+        uses: actions/create-release@v1
+        if: steps.changelog.outputs.skipped == 'false'
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
-        if: ${{ steps.checkTag.outputs.exists == 'false' }} # if tag doesn't exist then we can create a new release
-        run: |
-          yarn changelog
-          git add CHANGELOG.md
-          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-          git push origin --no-verify
-          git tag v${{ steps.package-version.outputs.current-version }}
-          git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
-          gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for more details."
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
