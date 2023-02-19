@@ -30,7 +30,6 @@ jobs:
       # fetch branches and switch to the temporary branch
       - name: switch to new branch
         run: git fetch --all && git checkout --track origin/release-from-${{ github.sha }}
-
       # create release info and push it upstream
       - name: conventional Changelog Action
         id: changelog
@@ -42,7 +41,7 @@ jobs:
           skip-on-empty: false
           skip-git-pull: true
 
-        - name: Create Pull Request
+      - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
           commit-message: 'Auto-generated pull request'
