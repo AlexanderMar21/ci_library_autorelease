@@ -29,6 +29,7 @@ jobs:
         run: |
           # Get the package version from package.json
           PACKAGE_VERSION=$(jq -r '.version' package.json)
+          echo "::set-env name=PACKAGE_VERSION::$(cat package.json | jq -r '.version')"
 
           # Check if a tag with the current version exists
           if git rev-parse "refs/tags/v${PACKAGE_VERSION}" >/dev/null 2>&1; then
@@ -54,5 +55,5 @@ jobs:
         run: |
           yarn changelog
           git add CHANGELOG.md
-          git commit -m "chore(pre-release): v${{ steps.package-version.outputs.current-version }} CHANGELOG"
+          git commit -m "chore(pre-release): v${{ env.PACKAGE_VERSION }} CHANGELOG"
           git push origin HEAD:${{ github.head_ref }} --no-verify
