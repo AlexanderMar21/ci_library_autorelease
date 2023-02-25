@@ -1,0 +1,45 @@
+name: Changelog Workflow
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Generate the changelog using your preferred tool.
+          # Here's an example using conventional-changelog:
+          npm install -g conventional-changelog-cli
+          conventional-changelog -p angular -i CHANGELOG.md -s
+
+      - name: Create branch
+        run: |
+          # Create a new branch with the changelog changes.
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -b changelog-${{ github.event.pull_request.number }}
+          git add CHANGELOG.md
+          git commit -m "chore: update changelog"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: changelog-${{ github.event.pull_request.number }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3.10.0
+        with:
+          title: "chore: update changelog"
+          commit-message: "chore: update changelog"
+          branch: changelog-${{ github.event.pull_request.number }}
+          base: main
+          labels: "changelog"
+          token: ${{ secrets.GITHUB_TOKEN }}
