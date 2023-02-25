@@ -39,10 +39,7 @@ jobs:
           REVIEWS=$(echo "${{ steps.pr-info.outputs.result.reviews }}")
 
           # Check if the PR is approved
-          if echo "$PR_STATUS" | grep -q "closed"; then
-            # If the PR is closed, save the boolean value "false" to an environment variable
-            echo "PR_APPROVED=false" >> $GITHUB_ENV
-          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
+          if echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
             # If any review is in the "APPROVED" state, save the boolean value "true" to an environment variable
             echo "Pull request is approved"
           elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "CHANGES_REQUESTED"))' >/dev/null; then
