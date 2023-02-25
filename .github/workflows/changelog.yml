@@ -20,11 +20,14 @@ jobs:
           PACKAGE_VERSION=$(jq -r '.version' package.json)
           # Set the environment variable for use in later steps
           echo "PACKAGE_VERSION=${PACKAGE_VERSION}" >> $GITHUB_ENV
+      - name: Do something with package version
+        run: |
+          echo "The package version is $PACKAGE_VERSION"
       - name: Check for existing tag
         uses: mukunku/tag-exists-action@v1.2.0
         id: checkTag
         with:
-          tag: v$PACKAGE_VERSION
+          tag: v${{ $PACKAGE_VERSION }}
       - name: Early Exit
         if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
