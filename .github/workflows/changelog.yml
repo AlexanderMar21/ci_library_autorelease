@@ -30,7 +30,7 @@ jobs:
         run: |
           # Get the PR status from the API response
           PR_STATUS=$(echo "${{ steps.pr-info.outputs.reviews }}" | jq -r '.[].state')
-
+          echo "${{ steps.pr-info.outputs.reviews }}"
           # Check if the PR is approved
           if echo "$PR_STATUS" | grep -q "APPROVED"; then
             echo "PR is approved"
