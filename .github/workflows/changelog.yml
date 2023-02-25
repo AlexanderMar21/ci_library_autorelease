@@ -16,28 +16,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Get PR information
-        id: pr-info
-        run: |
-          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}" | tr -d '\n')
-          PR_OWNER=$(echo "${{ github.event.pull_request.head.repo.owner.login }}" | tr -d '\n')
-          PR_REPO=$(echo "${{ github.event.pull_request.head.repo.name }}" | tr -d '\n')
-          PR_API_URL="https://api.github.com/repos/${PR_OWNER}/${PR_REPO}/pulls/${PR_NUMBER}/reviews?per_page=100&page=1"
-          PR_REVIEWS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$PR_API_URL")
-          echo "PR_REVIEWS=$PR_REVIEWS" >> $GITHUB_ENV
-
       - name: Check if PR is approved
+        uses: marocchino/pull-request-approvals@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.number }}
+          minimum-approvals: 1 # Set the required number of approvals
+        id: check_approvals
+      - name: Exit on not approved PR
+        if: steps.check_approvals.outputs.approved == 'false'
         run: |
-          # Get the PR status from the API response
-          PR_STATUS=$(echo "$PR_REVIEWS" | jq -r '.[].state')
-          # Check if the PR is approved
-          if echo "$PR_STATUS" | grep -q "APPROVED"; then
-            echo "PR is approved"
-          else
-            # If the PR is not approved
-            echo "PR is not approved yet. Exiting..."
-            exit 1
-          fi
+          echo "PR is not approved. Exiting..."
+          exit 1
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
           # Get the package version from package.json
