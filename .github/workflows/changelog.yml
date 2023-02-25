@@ -16,23 +16,42 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Get PR information # get if PR information
+      - name: Get PR information
         id: pr-info
-        uses: peter-evans/pull-request-comment@v3
+        uses: actions/github-script@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Check if PR is approved # check if PR is approved
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            return {
+              state: pr.data.state,
+              reviews: pr.data.reviews
+            }
+
+      - name: Check if PR is approved
         run: |
-          # Get the PR status from the API response
-          PR_STATUS=$(echo "${{ steps.pr-info.outputs.comments }}" | jq -r '.[].state')
+          # Get the PR status and reviews from the API response
+          PR_STATUS=$(echo "${{ steps.pr-info.outputs.result.state }}")
+          REVIEWS=$(echo "${{ steps.pr-info.outputs.result.reviews }}")
 
           # Check if the PR is approved
-          if echo "$PR_STATUS" | grep -q "APPROVED"; then
-            # If the PR is approved, do nothing
-            echo "The pull request is approved."
+          if echo "$PR_STATUS" | grep -q "closed"; then
+            # If the PR is closed, save the boolean value "false" to an environment variable
+            echo "PR_APPROVED=false" >> $GITHUB_ENV
+          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "CHANGES_REQUESTED"))' >/dev/null; then
+            # If any review is in the "CHANGES_REQUESTED" state
+            echo "Pull request has is marked as changes requested. Exiting..."
+            exit 1
+          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
+            # If any review is in the "APPROVED" state, save the boolean value "true" to an environment variable
+            echo "Pull request is approved"
           else
-            # If the PR is not approved, exit with code 1
-            echo "The pull request is not approved yet."
+            # If there are no reviews
+            echo "Pull request is has not been approved. Exiting..."
             exit 1
           fi
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
@@ -51,7 +70,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
       - name: Install dependencies
         run: yarn
       - name: setup git config
