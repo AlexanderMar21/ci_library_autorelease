@@ -23,7 +23,7 @@ jobs:
         with:
           tag: v${{ steps.package-version.outputs.current-version }}
       - name: Early Exit
-        if: ${{ steps.checkTag.outputs.exists == 'false' }}
+        if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
           echo "Not new version found"
           exit 1
