@@ -1,7 +1,7 @@
 name: Changelog Workflow
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, reopened]
     branches: [main]
 
 jobs:
@@ -40,4 +40,4 @@ jobs:
           yarn changelog
           git add CHANGELOG.md
           git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-          git push origin --no-verify
+          git push origin HEAD:${{ github.head_ref }}" --no-verify
