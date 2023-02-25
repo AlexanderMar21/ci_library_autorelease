@@ -25,14 +25,14 @@ jobs:
             echo "PR not approved. Please ensure the PR has at least one approval."
             exit 1
           fi
+      - name: Get Package Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@main
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
-          # Get the package version from package.json
-          PACKAGE_VERSION=$(jq -r '.version' package.json)
-
           # Check if a tag with the current version exists
-          if git rev-parse "refs/tags/v${PACKAGE_VERSION}" >/dev/null 2>&1; then
-            echo "The tag with the version v$PACKAGE_VERSION already exists"
+          if git rev-parse "refs/tags/v${{ steps.package-version.outputs.current-version }}" >/dev/null 2>&1; then
+            echo "The tag with the version ${{ steps.package-version.outputs.current-version }} already exists"
             exit 1
           else
             # If no tag exists
@@ -48,10 +48,12 @@ jobs:
         run: |
           git config user.name "Autorelease Bot"
           git config user.email "<>"
-      - name: Pubish Release
+      - name: Create Changelog
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
+          VERSION=$PACKAGE_VERSION
+          echo "Package version is $VERSION"
           yarn changelog
           git add CHANGELOG.md
           git commit -m "chore(pre-release): v${{ steps.package-version.outputs.current-version }} CHANGELOG"
