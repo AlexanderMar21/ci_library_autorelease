@@ -24,7 +24,7 @@ jobs:
         uses: mukunku/tag-exists-action@v1.2.0
         id: checkTag
         with:
-          tag: v${{ $PACKAGE_VERSION }}
+          tag: v$PACKAGE_VERSION
       - name: Early Exit
         if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
