@@ -24,12 +24,12 @@ jobs:
           PR_REPO=$(echo "${{ github.event.pull_request.head.repo.name }}" | tr -d '\n')
           PR_API_URL="https://api.github.com/repos/${PR_OWNER}/${PR_REPO}/pulls/${PR_NUMBER}/reviews?per_page=100&page=1"
           PR_REVIEWS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$PR_API_URL")
-          echo "::set-env name=PR_REVIEWS::$PR_REVIEWS"
+          echo "PR_REVIEWS=$PR_REVIEWS" >> $GITHUB_ENV
 
       - name: Check if PR is approved
         run: |
           # Get the PR status from the API response
-          PR_STATUS=$(echo "${{ steps.pr-info.outputs.reviews }}" | jq -r '.[].state')
+          PR_STATUS=$(echo "$PR_REVIEWS" | jq -r '.[].state')
           # Check if the PR is approved
           if echo "$PR_STATUS" | grep -q "APPROVED"; then
             echo "PR is approved"
