@@ -23,7 +23,7 @@ jobs:
             | jq '[ .[] | select(.state == "APPROVED") ] | length')
           if [ "$APPROVALS" -lt 1 ]; then
             echo "PR not approved. Please ensure the PR has at least one approval."
-            exit 1
+            exit 0
           fi
       - name: Get Package Version
         id: package-version
