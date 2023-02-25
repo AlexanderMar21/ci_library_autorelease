@@ -28,13 +28,13 @@ jobs:
       - name: Get package version
         run: |
           echo "export PACKAGE_VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
-          echo "$PACKAGE_VERSION"
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
+          VERSION=$PACKAGE_VERSION
           # Get the package version from package.json
           # Check if a tag with the current version exists
-          if git rev-parse "refs/tags/v${PACKAGE_VERSION}" >/dev/null 2>&1; then
-            echo "The tag with the version v$PACKAGE_VERSION already exists"
+          if git rev-parse "refs/tags/v${VERSION}" >/dev/null 2>&1; then
+            echo "The tag with the version v$VERSION already exists"
             exit 1
           else
             # If no tag exists
@@ -54,7 +54,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         run: |
+          VERSION=$PACKAGE_VERSION
           yarn changelog
           git add CHANGELOG.md
-          git commit -m "chore(pre-release): v${{ env.PACKAGE_VERSION }} CHANGELOG"
+          git commit -m "chore(pre-release): v$VERSION CHANGELOG"
           git push origin HEAD:${{ github.head_ref }} --no-verify
