@@ -25,14 +25,13 @@ jobs:
             echo "PR not approved. Please ensure the PR has at least one approval."
             exit 1
           fi
+      - name: Get package version
+        run: echo "export PACKAGE_VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
           # Get the package version from package.json
-          PACKAGE_VERSION=$(jq -r '.version' package.json)
-          echo "::set-env name=PACKAGE_VERSION::$(cat package.json | jq -r '.version')"
-
           # Check if a tag with the current version exists
-          if git rev-parse "refs/tags/v${PACKAGE_VERSION}" >/dev/null 2>&1; then
+          if git rev-parse "refs/tags/v${env.PACKAGE_VERSION}" >/dev/null 2>&1; then
             echo "The tag with the version v$PACKAGE_VERSION already exists"
             exit 1
           else
