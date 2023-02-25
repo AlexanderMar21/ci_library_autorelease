@@ -1,5 +1,7 @@
 name: Changelog Workflow
 on:
+  pull_request_review:
+    types: [submitted]
   pull_request:
     types: [opened, synchronize, reopened]
     branches: [main]
@@ -14,28 +16,32 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Check if tag exists from package.json version
+      - name: Check if PR is approved
+        run: |
+          APPROVALS=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews?per_page=100 \
+            | jq '[ .[] | select(.state == "APPROVED") ] | length')
+          if [ "$APPROVALS" -lt 1 ]; then
+            echo "PR not approved. Please ensure the PR has at least one approval."
+            exit 1
+          fi
+      - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
           # Get the package version from package.json
           PACKAGE_VERSION=$(jq -r '.version' package.json)
 
           # Check if a tag with the current version exists
           if git rev-parse "refs/tags/v${PACKAGE_VERSION}" >/dev/null 2>&1; then
-            # If a tag exists, save the boolean value "true" to an environment variable
-            echo "TAG_EXISTS=true" >> $GITHUB_ENV
+            echo "The tag with the version v$PACKAGE_VERSION already exists"
+            exit 1
           else
-            # If no tag exists, save the boolean value "false" to an environment variable
-            echo "TAG_EXISTS=false" >> $GITHUB_ENV
+            # If no tag exists
+            echo "The tag does not exist"
           fi
-      - name: Early Exit
-        if: ${{ env.TAG_EXISTS == 'true' }}
-        run: |
-          echo "The tag with the version already exists"
-          exit 1
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
       - name: Install dependencies
         run: yarn
       - name: setup git config
