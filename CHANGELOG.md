@@ -1,3 +1,23 @@
+## [0.3.5](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.3.4...v0.3.5) (2023-02-25)
+
+
+### Bug Fixes
+
+* condition ([d624aa8](https://github.com/AlexanderMar21/ci_library_autorelease/commit/d624aa8ecf8b0f4dd00bfd00e33d4e30d15c4681))
+* issue ([662e599](https://github.com/AlexanderMar21/ci_library_autorelease/commit/662e599b7c73f3cb141a15a86c58855f0d6bcf0f))
+* test new stuff ([af485d5](https://github.com/AlexanderMar21/ci_library_autorelease/commit/af485d5a12cced18c9dcfd14e00c1f490961e12f))
+* typo ([8e20012](https://github.com/AlexanderMar21/ci_library_autorelease/commit/8e20012ead30619fd2128694c49e339e529eb10f))
+* workflow ([effd442](https://github.com/AlexanderMar21/ci_library_autorelease/commit/effd4422583ce2e0f4dede8674ffaeb27698c355))
+* workflow for early access ([8c82d57](https://github.com/AlexanderMar21/ci_library_autorelease/commit/8c82d57d51458080a9ae9de6de06a59973f64d50))
+
+
+### Features
+
+* exit on not approved ([efd1c44](https://github.com/AlexanderMar21/ci_library_autorelease/commit/efd1c44d565c0bb7a54280fd4e244623a94792b6))
+* test condition ([88e6d72](https://github.com/AlexanderMar21/ci_library_autorelease/commit/88e6d7292c16e59e5affdb5eb5d11283b25eb857))
+
+
+
 ## [0.3.4](https://github.com/AlexanderMar21/ci_library_autorelease/compare/v0.3.3...v0.3.4) (2023-02-25)
 
 
