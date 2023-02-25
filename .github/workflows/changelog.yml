@@ -39,5 +39,5 @@ jobs:
         run: |
           yarn changelog
           git add CHANGELOG.md
-          git commit -m "chore(release): v${{ steps.package-version.outputs.current-version }} 🚀 [skip-ci]"
-          git push origin HEAD:${{ github.head_ref }}" --no-verify
+          git commit -m "chore(pre-release): v${{ steps.package-version.outputs.current-version }} CHANGELOG"
+          git push origin HEAD:${{ github.head_ref }} --no-verify
