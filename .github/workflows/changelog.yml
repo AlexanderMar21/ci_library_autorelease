@@ -18,37 +18,25 @@ jobs:
           fetch-depth: 0
       - name: Get PR information
         id: pr-info
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const pr = await github.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
-            });
-            return {
-              state: pr.data.state,
-              reviews: pr.data.reviews
-            }
+        run: |
+          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}" | tr -d '\n')
+          PR_OWNER=$(echo "${{ github.event.pull_request.head.repo.owner.login }}" | tr -d '\n')
+          PR_REPO=$(echo "${{ github.event.pull_request.head.repo.name }}" | tr -d '\n')
+          PR_API_URL="https://api.github.com/repos/${PR_OWNER}/${PR_REPO}/pulls/${PR_NUMBER}/reviews?per_page=100&page=1"
+          PR_REVIEWS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$PR_API_URL")
+          echo "::set-output name=reviews::$PR_REVIEWS"
 
       - name: Check if PR is approved
         run: |
-          # Get the PR status and reviews from the API response
-          PR_STATUS=$(echo "${{ steps.pr-info.outputs.result.state }}")
-          REVIEWS=$(echo "${{ steps.pr-info.outputs.result.reviews }}")
+          # Get the PR status from the API response
+          PR_STATUS=$(echo "${{ steps.pr-info.outputs.reviews }}" | jq -r '.[].state')
 
           # Check if the PR is approved
-          if echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
-            # If any review is in the "APPROVED" state, save the boolean value "true" to an environment variable
-            echo "Pull request is approved"
-          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "CHANGES_REQUESTED"))' >/dev/null; then
-            # If any review is in the "CHANGES_REQUESTED" state
-            echo "Pull request has is marked as changes requested. Exiting..."
-            exit 1
+          if echo "$PR_STATUS" | grep -q "APPROVED"; then
+            echo "PR is approved"
           else
-            # If there are no reviews
-            echo "Pull request is has not been approved. Exiting..."
+            # If the PR is not approved
+            echo "PR is not approved yet. Exiting..."
             exit 1
           fi
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
