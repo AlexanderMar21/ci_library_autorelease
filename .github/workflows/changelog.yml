@@ -17,16 +17,19 @@ jobs:
         with:
           fetch-depth: 0
       - name: Check if PR is approved
-        uses: marocchino/pull-request-approvals@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ github.event.number }}
-          minimum-approvals: 1 # Set the required number of approvals
         id: check_approvals
-      - name: Exit on not approved PR
-        if: steps.check_approvals.outputs.approved == 'false'
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/:owner/:repo/pulls/:pull_number/reviews
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Exit if PR is not approved
+        if: steps.check_approvals.outputs | fromjson | map(select(.state == "APPROVED")) | length < 1
         run: |
-          echo "PR is not approved. Exiting..."
+          echo "PR is not approved. Exiting"
           exit 1
       - name: Check if tag exists from package.json version # check if tag from package.json version already exists
         run: |
