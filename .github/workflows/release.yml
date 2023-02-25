@@ -23,13 +23,13 @@ jobs:
         id: checkTag
         with:
           tag: v${{ steps.package-version.outputs.current-version }}
-      - name: Pubish Release
+      - name: Exit if tag already exists
         env:
           GITHUB_TOKEN: ${{ secrets.AUTO_RELEASE_TOKEN }}
         if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
-          echo "Tag v${{ steps.package-version.outputs.current-version }} already exists"
-          echo 1
+          echo "Tag v${{ steps.package-version.outputs.current-version }} already exists. Exiting..."
+          exit 1
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
