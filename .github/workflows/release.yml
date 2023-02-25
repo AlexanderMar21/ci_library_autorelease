@@ -40,4 +40,4 @@ jobs:
         run: |
           git tag v${{ steps.package-version.outputs.current-version }}
           git push origin v${{ steps.package-version.outputs.current-version }} --no-verify
-          gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details." --draft
+          gh release create v${{ steps.package-version.outputs.current-version }} --notes="Please refer to [CHANGELOG.md](https://github.com/AlexanderMar21/ci_library_autorelease/blob/main/CHANGELOG.md) for details."
