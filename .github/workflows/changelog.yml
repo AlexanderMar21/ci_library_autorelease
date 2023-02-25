@@ -42,13 +42,13 @@ jobs:
           if echo "$PR_STATUS" | grep -q "closed"; then
             # If the PR is closed, save the boolean value "false" to an environment variable
             echo "PR_APPROVED=false" >> $GITHUB_ENV
+          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
+            # If any review is in the "APPROVED" state, save the boolean value "true" to an environment variable
+            echo "Pull request is approved"
           elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "CHANGES_REQUESTED"))' >/dev/null; then
             # If any review is in the "CHANGES_REQUESTED" state
             echo "Pull request has is marked as changes requested. Exiting..."
             exit 1
-          elif echo "$REVIEWS" | jq -e 'any(.[] | select(.state == "APPROVED"))' >/dev/null; then
-            # If any review is in the "APPROVED" state, save the boolean value "true" to an environment variable
-            echo "Pull request is approved"
           else
             # If there are no reviews
             echo "Pull request is has not been approved. Exiting..."
